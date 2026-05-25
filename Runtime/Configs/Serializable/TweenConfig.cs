@@ -10,8 +10,15 @@ namespace DOTweenConfigs
     [Serializable]
     public class TweenConfig
     {
-        [SerializeField]
-        private float m_duration;
+        public TweenConfig(float duration, Ease ease, int loops)
+        {
+            
+        }
+        
+        [SerializeField] private float m_duration = 1f;        
+        [SerializeField] private Ease ease = Ease.OutQuad;
+        [SerializeField] private int loops = 1;
+        [SerializeField] private LoopType loopType = 1;
 
         public float Duration
         {
