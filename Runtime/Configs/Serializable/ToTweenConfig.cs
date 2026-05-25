@@ -9,21 +9,23 @@ namespace DOTweenConfigs
     [Serializable]
     public class ToTweenConfig<T> : TweenConfig
     {
-        [SerializeField]
-        private T m_to;
+        [SerializeField] private T to;
+        [SerializeField] private bool andComeFrom = false; //technically there could be just a from as well, enum?
+        [SerializeField] private T from; //show if andComeFrom == true
+        [SerializeField] private bool isRelative = false; //show if andComeFrom == false
 
-        public T To
-        {
-            get { return m_to; }
-        }
+
+        public T To => to;
+        public T From => from;
+
 
         public ToTweenConfig()
         {
         }
-
+        
         public ToTweenConfig(T to)
         {
-            m_to = to;
+            this.to = to;
         }
     }
 }

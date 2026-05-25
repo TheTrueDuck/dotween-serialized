@@ -1,11 +1,20 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 namespace DOTweenConfigs
 {
     public static partial class DOTweenExtensions
     {
-        public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetEase(c.ease);
+        public static TweenerCore<T1, T2, TPlugOptions> SetProperties<T1, T2, TPlugOptions>(this TweenerCore<T1, T2, TPlugOptions> tween, ToTweenConfig<T2> c) where TPlugOptions : struct, IPlugOptions
+        {
+            return tween.From(c.From).SetEase(c.Ease).SetLoops(c.Loops, c.LoopType);
+        }
+
+        public static TweenerCore<Vector3, Vector3, VectorOptions> DoMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetProperties(c);
+        // public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetProperties(c);
+        // public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetEase(c.Ease);
         // public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping);
         public static Tweener DOMoveX(this Transform target, Position1DTweenConfig c) => target.DOMoveX(c.To, c.Duration, c.Snapping);
         public static Tweener DOMoveY(this Transform target, Position1DTweenConfig c) => target.DOMoveY(c.To, c.Duration, c.Snapping);
