@@ -11,9 +11,10 @@ namespace DOTweenConfigs
         {
             return tween.From(c.From).SetEase(c.Ease).SetLoops(c.Loops, c.LoopType);
         }
-
+        
         public static TweenerCore<Vector3, Vector3, VectorOptions> DoMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetProperties(c);
-        // public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetProperties(c);
+        // public static TweenerCore<Vector3, Vector3, VectorOptions> DoMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetProperties(c);
+        public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetProperties(c);
         // public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping).SetEase(c.Ease);
         // public static Tweener DOMove(this Transform target, Position3DTweenConfig c) => target.DOMove(c.To, c.Duration, c.Snapping);
         public static Tweener DOMoveX(this Transform target, Position1DTweenConfig c) => target.DOMoveX(c.To, c.Duration, c.Snapping);
