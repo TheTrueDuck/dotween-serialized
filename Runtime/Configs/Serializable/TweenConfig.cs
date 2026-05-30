@@ -14,14 +14,14 @@ namespace DOTweenConfigs
     {
         public TweenConfig(float duration = 1f, Ease ease = Ease.OutQuad, int loops = 1, LoopType loopType = LoopType.Restart)
         {
-            this.duration = duration;
-            this.ease = ease;
+            Duration = duration;
+            Ease = ease;
             // DOTween.defaultEaseType
             // DOTween.defaultEaseOvershootOrAmplitude
             // DOTween.defaultEasePeriod
-            this.loops = loops;
+            Loops = loops;
             //1
-            this.loopType = loopType;
+            LoopType = loopType;
             // DOTween.defaultLoopType
             
             // DOTween.defaultTimeScaleIndependent
@@ -29,42 +29,47 @@ namespace DOTweenConfigs
             
         }
         
-        [SerializeField] private float duration = 1f;        
-        [SerializeField] private float delay = 0f;        
-        [SerializeField] private Ease ease = Ease.OutQuad;
-        [SerializeField] private float easeOvershootOrAmplitude; //show if ease is flash bounce custom elastic  back
-        [SerializeField] private float easePeriod;//show if ease is flash bounce custom elastic
+        public float Duration = 1f;        
         
-        [SerializeField] private int loops = 1;
-        [SerializeField] private LoopType loopType = LoopType.Restart;
+        //common
+        public Ease Ease = Ease.OutQuad;
+        public float EaseOvershootOrAmplitude; //show if ease is flash bounce custom elastic  back
+        public float EasePeriod;//show if ease is flash bounce custom elastic
         
-        [SerializeField] private UnityEvent onStart;
-        [SerializeField] private UnityEvent onUpdate;
-        [SerializeField] private UnityEvent onComplete;
+        public float Delay = 0f;        
         
-        [SerializeField] private UnityEvent onCreated;
-        [SerializeField] private UnityEvent onKill;
+        public int Loops = 1;
+        public LoopType LoopType = LoopType.Restart;//only show if loops != 1
         
-        [SerializeField] private UnityEvent onPlay;
-        [SerializeField] private UnityEvent onPause;
-        [SerializeField] private UnityEvent onRewind;
+        //events
+        public UnityEvent OnStart;
+        public UnityEvent OnUpdate;
+        public UnityEvent OnComplete;
         
-        [SerializeField] private UnityEvent onStepComplete;
-        [SerializeField] private UnityEvent<int> onWaypointChanged;
+        public UnityEvent OnCreated;
+        public UnityEvent OnKill;
         
+        public UnityEvent OnPlay;
+        public UnityEvent OnPause;
+        public UnityEvent OnRewind;
         
-        //backwards
-        //id
-        //update type
-        //time scale
+        public UnityEvent OnStepComplete;
+        public UnityEvent<int> OnWaypointChanged;
+        
+        //advanced
+        public UpdateType UpdateType = UpdateType.Normal;
+        public bool IsIndependentUpdate = false;
+        
+        public float TimeScale = 1f;
+        public bool IsBackwards = false;
+        
+        public object Id = null;
+        public string StringId = null;
+        public int IntId = -999;
+        
         
         
         //asPrependedIntervalIfSequence
         //speed based
-
-        public float Duration => duration;
-        public Ease Ease => ease;
-        public int Loops => loops;
-        public LoopType LoopType => loopType;
     }
 }

@@ -29,3 +29,12 @@ namespace DOTweenConfigs
         }
     }
 }
+public enum TweenTargets //merge isRelative in here?
+{
+    ToOnly = 0b01,
+    FromTo = 0b11,
+    FromOnly = 0b10,
+    // FromAToB,
+    // FromHereToB,
+    // FromAToHere,
+}
