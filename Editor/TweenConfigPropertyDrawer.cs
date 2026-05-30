@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 [CustomPropertyDrawer(typeof(TweenConfig))]
 [CustomPropertyDrawer(typeof(ToTweenConfig<>))]
 [CustomPropertyDrawer(typeof(Position3DTweenConfig))]
+[CustomPropertyDrawer(typeof(SnapShake3DTweenConfig))]
 public class TweenConfigPropertyDrawer : PropertyDrawer
 {
     private const int Indented = 15;
@@ -20,7 +21,48 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
     // }
     public override VisualElement CreatePropertyGUI(SerializedProperty property)
     {
-        Debug.Log($"{property.type} {property.propertyType}");
+        Debug.LogWarning($"{property.displayName}: {property.type} {fieldInfo.FieldType} {property.propertyType}");
+        // if(typeof(ToTweenConfig<>).IsAssignableFrom(fieldInfo.FieldType)) Debug.Log($"assignable from ToTweenConfig!");
+        // if(fieldInfo.FieldType.IsSubclassOf(typeof(ToTweenConfig<>))) Debug.Log($"subclass ToTweenConfig!");
+        // if(fieldInfo.FieldType == typeof(ToTweenConfig<>)) Debug.Log($"is ToTweenConfig!");
+        // if(fieldInfo.FieldType.IsAssignableFrom(typeof(ToTweenConfig<>))) Debug.Log($"rev assignable from ToTweenConfig!");
+        // if(typeof(ToTweenConfig<>).IsSubclassOf(fieldInfo.FieldType)) Debug.Log($"rev subclass ToTweenConfig!");
+        
+        // if(fieldInfo.FieldType.IsGenericType) 
+        // {
+        //     Debug.Log($"generic!");
+        //     if(fieldInfo.FieldType.GetGenericTypeDefinition() == typeof(ToTweenConfig<>)) 
+        //     {
+        //         Type genericType = fieldInfo.FieldType.GetGenericTypeDefinition();
+        //         Debug.Log($"generic ToTweenConfig!");
+                
+        //         if(typeof(ToTweenConfig<>).IsAssignableFrom(genericType)) Debug.Log($"generic assignable from ToTweenConfig!");
+        //         if(genericType.IsSubclassOf(typeof(ToTweenConfig<>))) Debug.Log($"generic subclass ToTweenConfig!");
+        //         if(genericType == typeof(ToTweenConfig<>)) Debug.Log($"generic is ToTweenConfig!");
+        //         if(genericType.IsAssignableFrom(typeof(ToTweenConfig<>))) Debug.Log($"generic rev assignable from ToTweenConfig!");
+        //         if(typeof(ToTweenConfig<>).IsSubclassOf(genericType)) Debug.Log($"generic rev subclass ToTweenConfig!");
+        //     }
+        // }
+        
+        // if(InheritsFromToTweenConfig(fieldInfo.FieldType))
+        // {
+        //     Debug.Log($"Inh");
+        // }
+        
+        // try
+        // {
+        //     Debug.Log($"{property.FindPropertyRelative("to").GetType()}");
+        // }
+        // catch
+        // {
+        //     Debug.LogWarning($"Doesnt have to property!");
+        // }
+        
+        // if(property.FindPropertyRelative("to") == null)
+        // {
+        //     Debug.Log($"direkt check");
+        // }
+        
         // Create property container element.
         // VisualElement container = new VisualElement();
         Foldout container = new Foldout() { text = property.displayName, value = true };
@@ -48,7 +90,7 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         PropertyField onWaypointChangedField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnWaypointChanged)));
         
         PropertyField loopTypeField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.LoopType)));
-        loopTypeField.RegisterCallback<GeometryChangedEvent>(_ => loopTypeField.Q<Label>().style.paddingLeft = Indented);
+        loopTypeField.RegisterCallback<GeometryChangedEvent>(_ => { if (loopTypeField.Q<Label>() != null) loopTypeField.Q<Label>().style.paddingLeft = Indented; });
         
         
         PropertyField easeOvershootOrAmplitudeField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.EaseOvershootOrAmplitude)), "Overshoot Or Amplitude");
@@ -68,20 +110,26 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         
         container.Add(durationField);
         
-        if (property.type != nameof(TweenConfig))
+        // if (property.type != nameof(TweenConfig)) //actually no, theres BaseShakeTweenConfig<Vector3> which doesn't have these
+        // try
         {
             PropertyField toField = new PropertyField(property.FindPropertyRelative("to"));
             PropertyField fromField = new PropertyField(property.FindPropertyRelative("from"));
             container.Add(toField);
             container.Add(fromField);
         }
+        // catch
+        // {
+        //     Debug.LogWarning($"Doesn't have to or from, but who cares?");
+        // }
 
 
         // container.Add(new ToolbarSpacer() {name = "a", panel});
         // container.Add(new Box());
         // if (property.type != nameof(TweenConfig)) container.Add(new Label(" ")); //spacer
         // container.Add(new TextElement() { text = "hello"});
-        if (property.type == nameof(Position3DTweenConfig))
+        
+        // if (property.type == nameof(Position3DTweenConfig))
         {
             PropertyField snappingField = new PropertyField(property.FindPropertyRelative(nameof(Position3DTweenConfig.Snapping)));
             container.Add(snappingField);
@@ -131,11 +179,11 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         // container.Add(toolbarMenu);
         
         
-        easeField.RegisterValueChangeCallback(Method);
+        // easeField.RegisterValueChangeCallback(Method);
         
         easeField.RegisterValueChangeCallback(e =>
         {
-            Debug.Log($"Toggling visibility ease {(Ease)easeProperty.enumValueIndex} {(Ease)e.changedProperty.enumValueIndex}");
+            // Debug.Log($"Toggling visibility ease {(Ease)easeProperty.enumValueIndex} {(Ease)e.changedProperty.enumValueIndex}");
             // easeOvershootOrAmplitudeField.visible = EasingUsesOvershoorOrAmplitude((Ease)easeProperty.enumValueIndex);
             // easePeriodField.visible = EasingUsesPeriod((Ease)easeProperty.enumValueIndex);
             easeOvershootOrAmplitudeField.style.display = EasingUsesOvershoorOrAmplitude((Ease)easeProperty.enumValueIndex) ? DisplayStyle.Flex : DisplayStyle.None;
@@ -144,7 +192,7 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         
         loopsField.RegisterValueChangeCallback(e =>
         {
-            Debug.Log($"Toggling visibility loops {loopsProperty.intValue} {e.changedProperty.intValue}");
+            // Debug.Log($"Toggling visibility loops {loopsProperty.intValue} {e.changedProperty.intValue}");
 
             loopTypeField.style.display = loopsProperty.intValue == 1 ? DisplayStyle.None : DisplayStyle.Flex;
         });
@@ -234,5 +282,21 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
     {
         return Ease.InElastic <= ease && ease <= Ease.INTERNAL_Custom && ease != Ease.INTERNAL_Zero
             && ease != Ease.InBack && ease != Ease.OutBack && ease != Ease.InOutBack;
+    }
+    
+    bool InheritsFromToTweenConfig(Type type)
+    {
+        while (type != null && type != typeof(object))
+        {
+            if (type.IsGenericType &&
+                type.GetGenericTypeDefinition() == typeof(ToTweenConfig<>))
+            {
+                return true;
+            }
+
+            type = type.BaseType;
+        }
+
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -35,11 +36,17 @@ namespace DOTweenConfigs
         public Ease Ease = Ease.OutQuad;
         public float EaseOvershootOrAmplitude; //show if ease is flash bounce custom elastic  back
         public float EasePeriod;//show if ease is flash bounce custom elastic
+        //what about custom animation curves?
         
-        public float Delay = 0f;        
+        public float Delay = 0f;     
+        [Tooltip("In sequences whether the delay should happen once (false), or every loop (true).")]   
+        public bool AsPrependedIntervalIfSequence = true; //show if Delay != 0 //maybe put in advanced
         
         public int Loops = 1;
         public LoopType LoopType = LoopType.Restart;//only show if loops != 1
+        
+        [Tooltip("When true, instead of tweening for a fixed duration at a variable speed, tween for a variable duration at a fixed speed.")]
+        public bool IsSpeedBased = false;
         
         //events
         public UnityEvent OnStart;
@@ -56,20 +63,16 @@ namespace DOTweenConfigs
         public UnityEvent OnStepComplete;
         public UnityEvent<int> OnWaypointChanged;
         
-        //advanced
+        //advanced                
         public UpdateType UpdateType = UpdateType.Normal;
         public bool IsIndependentUpdate = false;
         
         public float TimeScale = 1f;
         public bool IsBackwards = false;
         
+        public object Target = null;
         public object Id = null;
         public string StringId = null;
         public int IntId = -999;
-        
-        
-        
-        //asPrependedIntervalIfSequence
-        //speed based
     }
 }
