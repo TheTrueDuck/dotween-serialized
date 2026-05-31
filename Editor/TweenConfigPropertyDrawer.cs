@@ -27,7 +27,7 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         // if(fieldInfo.FieldType == typeof(ToTweenConfig<>)) Debug.Log($"is ToTweenConfig!");
         // if(fieldInfo.FieldType.IsAssignableFrom(typeof(ToTweenConfig<>))) Debug.Log($"rev assignable from ToTweenConfig!");
         // if(typeof(ToTweenConfig<>).IsSubclassOf(fieldInfo.FieldType)) Debug.Log($"rev subclass ToTweenConfig!");
-        
+
         // if(fieldInfo.FieldType.IsGenericType) 
         // {
         //     Debug.Log($"generic!");
@@ -35,7 +35,7 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         //     {
         //         Type genericType = fieldInfo.FieldType.GetGenericTypeDefinition();
         //         Debug.Log($"generic ToTweenConfig!");
-                
+
         //         if(typeof(ToTweenConfig<>).IsAssignableFrom(genericType)) Debug.Log($"generic assignable from ToTweenConfig!");
         //         if(genericType.IsSubclassOf(typeof(ToTweenConfig<>))) Debug.Log($"generic subclass ToTweenConfig!");
         //         if(genericType == typeof(ToTweenConfig<>)) Debug.Log($"generic is ToTweenConfig!");
@@ -43,12 +43,12 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         //         if(typeof(ToTweenConfig<>).IsSubclassOf(genericType)) Debug.Log($"generic rev subclass ToTweenConfig!");
         //     }
         // }
-        
+
         // if(InheritsFromToTweenConfig(fieldInfo.FieldType))
         // {
         //     Debug.Log($"Inh");
         // }
-        
+
         // try
         // {
         //     Debug.Log($"{property.FindPropertyRelative("to").GetType()}");
@@ -57,12 +57,12 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         // {
         //     Debug.LogWarning($"Doesnt have to property!");
         // }
-        
+
         // if(property.FindPropertyRelative("to") == null)
         // {
         //     Debug.Log($"direkt check");
         // }
-        
+
         // Create property container element.
         // VisualElement container = new VisualElement();
         Foldout container = new Foldout() { text = property.displayName, value = true };
@@ -77,7 +77,7 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         PropertyField easeField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.Ease)));
         PropertyField loopsField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.Loops)));
         // SerializedProperty loopType = property.FindPropertyRelative("loopType");
-        
+
         PropertyField onStartField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnStart)));
         PropertyField onUpdateField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnUpdate)));
         PropertyField onCompleteField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnComplete)));
@@ -88,47 +88,54 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         PropertyField onRewindField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnRewind)));
         PropertyField onStepCompleteField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnStepComplete)));
         PropertyField onWaypointChangedField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.OnWaypointChanged)));
-        
+
         PropertyField loopTypeField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.LoopType)));
-        loopTypeField.RegisterCallback<GeometryChangedEvent>(_ => { if (loopTypeField.Q<Label>() != null) loopTypeField.Q<Label>().style.paddingLeft = Indented; });
-        
-        
+        IndentWhenReady(loopTypeField);
+
         PropertyField easeOvershootOrAmplitudeField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.EaseOvershootOrAmplitude)), "Overshoot Or Amplitude");
         // easeOvershootOrAmplitudeField.visible = EasingUsesOvershoorOrAmplitude((Ease)easeProperty.enumValueIndex);
         // easeOvershootOrAmplitudeField.style.display = EasingUsesOvershoorOrAmplitude((Ease)easeProperty.enumValueIndex) ? DisplayStyle.Flex : DisplayStyle.None;
         // easeOvershootOrAmplitudeField.Q<Label>().style.paddingLeft = Indented;
-        easeOvershootOrAmplitudeField.RegisterCallback<GeometryChangedEvent>(_ => easeOvershootOrAmplitudeField.Q<Label>().style.paddingLeft = Indented);
+        // easeOvershootOrAmplitudeField.RegisterCallback<GeometryChangedEvent>(_ => easeOvershootOrAmplitudeField.Q<Label>().style.paddingLeft = Indented);
+        IndentWhenReady(easeOvershootOrAmplitudeField);
         
         PropertyField easePeriodField = new PropertyField(property.FindPropertyRelative(nameof(TweenConfig.EasePeriod)), "Period");
         // easePeriodField.visible = EasingUsesPeriod((Ease)easeProperty.enumValueIndex);
         // easePeriodField.style.display = EasingUsesPeriod((Ease)easeProperty.enumValueIndex) ? DisplayStyle.Flex : DisplayStyle.None;
         // easePeriodField.Q<Label>().style.paddingLeft = Indented;
-        easePeriodField.RegisterCallback<GeometryChangedEvent>(_ => easePeriodField.Q<Label>().style.paddingLeft = Indented);
-        
+        // easePeriodField.RegisterCallback<GeometryChangedEvent>(_ => easePeriodField.Q<Label>().style.paddingLeft = Indented);
+        IndentWhenReady(easePeriodField);
+
         // EnumField a = new EnumField().bin;
-        
-        
+
+
         container.Add(durationField);
-        
+
         // if (property.type != nameof(TweenConfig)) //actually no, theres BaseShakeTweenConfig<Vector3> which doesn't have these
         // try
         {
-            PropertyField toField = new PropertyField(property.FindPropertyRelative("to"));
-            PropertyField fromField = new PropertyField(property.FindPropertyRelative("from"));
-            container.Add(toField);
-            container.Add(fromField);
+            container.Add(new PropertyField(property.FindPropertyRelative(nameof(ToTweenConfig<object>.ToOrFrom))));
+            container.Add(new PropertyField(property.FindPropertyRelative(nameof(ToTweenConfig<object>.To))));
+            container.Add(new PropertyField(property.FindPropertyRelative(nameof(ToTweenConfig<object>.From))));
+            container.Add(new PropertyField(property.FindPropertyRelative(nameof(ToTweenConfig<object>.IsRelative))));
         }
         // catch
         // {
         //     Debug.LogWarning($"Doesn't have to or from, but who cares?");
         // }
+                
+        container.Add(new PropertyField(property.FindPropertyRelative(nameof(BaseShakeTweenConfig<object>.Strength))));
+        container.Add(new PropertyField(property.FindPropertyRelative(nameof(BaseShakeTweenConfig<object>.Vibrato))));
+        container.Add(new PropertyField(property.FindPropertyRelative(nameof(BaseShakeTweenConfig<object>.Randomness))));
+        container.Add(new PropertyField(property.FindPropertyRelative(nameof(BaseShakeTweenConfig<object>.FadeOut))));
+        container.Add(new PropertyField(property.FindPropertyRelative(nameof(BaseShakeTweenConfig<object>.ShakeRandomnessMode))));
 
 
         // container.Add(new ToolbarSpacer() {name = "a", panel});
         // container.Add(new Box());
         // if (property.type != nameof(TweenConfig)) container.Add(new Label(" ")); //spacer
         // container.Add(new TextElement() { text = "hello"});
-        
+
         // if (property.type == nameof(Position3DTweenConfig))
         {
             PropertyField snappingField = new PropertyField(property.FindPropertyRelative(nameof(Position3DTweenConfig.Snapping)));
@@ -138,49 +145,49 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
 
         Foldout common = new Foldout() { text = "Common", value = true };
         container.Add(common);
-        
 
-        
+
+
         // Add fields to the container.
         // container.Add(ease);
         // container.Add(easeField);
-        
+
         // container.Add(easeOvershootOrAmplitudeField);
         // container.Add(easePeriodField);
-        
+
         // container.Add(loopsField);
         // container.Add(loopTypeField);
-        
-        common.Add(easeField);        
+
+        common.Add(easeField);
         common.Add(easeOvershootOrAmplitudeField);
         common.Add(easePeriodField);
-        
+
         common.Add(delayField);
-        
+
         common.Add(loopsField);
         common.Add(loopTypeField);
-        
-        
-        
-        
+
+
+
+
         // TwoPaneSplitView myElement = new TwoPaneSplitView();
 
         // myElement.Add(loopsField);
         // myElement.Add(loopTypeField);
-        
+
         // container.Add(myElement);
-        
-        
+
+
         // var toolbarMenu = new ToolbarMenu() { text = "Menu Text" };
         // toolbarMenu.menu.AppendAction("Menu item 1", (a) => { Debug.Log("Menu item 1 clicked"); });
         // toolbarMenu.menu.AppendAction("Menu item 2", (a) => { Debug.Log("Menu item 2 clicked"); });
         // toolbarMenu.menu.AppendAction("Menu item 3", (a) => { Debug.Log("Menu item 3 clicked"); });
-        
+
         // container.Add(toolbarMenu);
-        
-        
+
+
         // easeField.RegisterValueChangeCallback(Method);
-        
+
         easeField.RegisterValueChangeCallback(e =>
         {
             // Debug.Log($"Toggling visibility ease {(Ease)easeProperty.enumValueIndex} {(Ease)e.changedProperty.enumValueIndex}");
@@ -189,20 +196,20 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
             easeOvershootOrAmplitudeField.style.display = EasingUsesOvershoorOrAmplitude((Ease)easeProperty.enumValueIndex) ? DisplayStyle.Flex : DisplayStyle.None;
             easePeriodField.style.display = EasingUsesPeriod((Ease)easeProperty.enumValueIndex) ? DisplayStyle.Flex : DisplayStyle.None;
         });
-        
+
         loopsField.RegisterValueChangeCallback(e =>
         {
             // Debug.Log($"Toggling visibility loops {loopsProperty.intValue} {e.changedProperty.intValue}");
 
             loopTypeField.style.display = loopsProperty.intValue == 1 ? DisplayStyle.None : DisplayStyle.Flex;
         });
-        
+
         // easeField.RegisterValueChangeCallback(e =>
         // {
         //     Debug.Log($"Toggling visibility {(Ease)easeProperty.enumValueIndex} {(Ease)e.changedProperty.enumValueIndex}");
         //     container.MarkDirtyRepaint();
         // });
-        
+
         // easeField.RegisterValueChangeCallback(_ => container.MarkDirtyRepaint());
         // easeField.RegisterValueChangeCallback(_ => container.Clear());
         // easeField.RegisterValueChangeCallback(_ => CreatePropertyGUI(property));
@@ -214,7 +221,7 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
         //     container.Add(easeOvershootOrAmplitudeField);
         //     easeOvershootOrAmplitudeField.visible = EasingUsesOvershoorOrAmplitude((Ease)easeProperty.enumValueIndex);
         // }
-        
+
         // if (EasingUsesPeriod((Ease)easeProperty.enumValueIndex))
         // {
         //     PropertyField easePeriodField = new PropertyField(property.FindPropertyRelative("easePeriod"));
@@ -225,14 +232,14 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
 
         Foldout events = new Foldout() { text = "Events", value = false };
         container.Add(events);
-        
+
         events.Add(onStartField);
         events.Add(onUpdateField);
         events.Add(onCompleteField);
-        
+
         Foldout allEvents = new Foldout() { text = "All Events", value = false };
         events.Add(allEvents);
-        
+
         allEvents.Add(onCreatedField);
         allEvents.Add(onKillField);
         allEvents.Add(onPlayField);
@@ -245,10 +252,18 @@ public class TweenConfigPropertyDrawer : PropertyDrawer
 
         Foldout advanced = new Foldout() { text = "Advanced", value = false };
         container.Add(advanced);
-        
-        
+
+
 
         return container;
+    }
+
+    private static void IndentWhenReady(PropertyField loopTypeField)
+    {
+        loopTypeField.RegisterCallback<GeometryChangedEvent>(_ => 
+        { 
+            if (loopTypeField.Q<Label>() != null) loopTypeField.Q<Label>().style.paddingLeft = Indented; 
+        });
     }
 
     private void AddPadding(GeometryChangedEvent evt)

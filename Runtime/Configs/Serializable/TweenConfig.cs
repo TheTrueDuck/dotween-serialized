@@ -33,6 +33,9 @@ namespace DOTweenConfigs
         public float Duration = 1f;        
         
         //common
+        
+        //actually the eases aren't a part of shake, so they should go to To. but i mean there is also dopath which also uses eases except like back and eleastic
+        //do i make this an interface? like shake?
         public Ease Ease = Ease.OutQuad;
         public float EaseOvershootOrAmplitude; //show if ease is flash bounce custom elastic  back
         public float EasePeriod;//show if ease is flash bounce custom elastic
@@ -48,6 +51,26 @@ namespace DOTweenConfigs
         [Tooltip("When true, instead of tweening for a fixed duration at a variable speed, tween for a variable duration at a fixed speed.")]
         public bool IsSpeedBased = false;
         
+        //advanced                
+        public GameObject Link = null;
+        public LinkBehaviour LinkBehaviour = LinkBehaviour.KillOnDestroy; //only show if Target != null
+        
+        public UpdateType UpdateType = UpdateType.Normal;
+        public bool IsIndependentUpdate = false;
+        
+        public float TimeScale = 1f;
+        public bool IsBackwards = false; //what about is inverted
+        
+        public object Id = null;
+        public string StringId = null;
+        public int IntId = -999;
+        
+        //Not implementing
+        //recyclable
+        //auto kill
+        //auto play
+        //set immediately
+        
         //events
         public UnityEvent OnStart;
         public UnityEvent OnUpdate;
@@ -62,17 +85,5 @@ namespace DOTweenConfigs
         
         public UnityEvent OnStepComplete;
         public UnityEvent<int> OnWaypointChanged;
-        
-        //advanced                
-        public UpdateType UpdateType = UpdateType.Normal;
-        public bool IsIndependentUpdate = false;
-        
-        public float TimeScale = 1f;
-        public bool IsBackwards = false;
-        
-        public object Target = null;
-        public object Id = null;
-        public string StringId = null;
-        public int IntId = -999;
     }
 }
